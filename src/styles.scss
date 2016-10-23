@@ -1,1 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
+
+$primaryBrandColor: #191970;
+
+
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6  {
+  margin: 0;
+  padding: 0;
+}
+
+@mixin button  {
+  padding: 5px 20px;
+  color: $primaryBrandColor;
+  border: 1px solid $primaryBrandColor;
+  border-radius: 5px;
+  background-color: white;
+  &:hover {
+    color: white;
+    border-color: transparent;
+    background-color: $primaryBrandColor;
+  }
+}
+
+button  {
+  @include button;
+}
+
+button[disabled]  {
+  color: #ccc;
+  border: 1px solid #ccc;
+  &:hover {
+    color: #ccc;
+    border: 1px solid #ccc;
+    background-color: white;
+  }
+}
