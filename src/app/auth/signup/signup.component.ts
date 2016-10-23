@@ -22,12 +22,6 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit()  {
-    const user = new User(
-      this.signupForm.value.username,
-      this.signupForm.value.email,
-      this.signupForm.value.password,
-    );
-    console.log(user);
     this.authService.signup(this.signupForm.value)
         .subscribe(
           data => console.log(data),

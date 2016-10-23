@@ -8,8 +8,13 @@ import { AuthService } from './auth.service';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent {
+  // private loginForm = false;
 
   constructor( private authService: AuthService)  {}
+
+  // showLoginForm() {
+  //   this.loginForm = true;
+  // }
 
   loginFacebook() {
     // this.authService.loginFacebook()
