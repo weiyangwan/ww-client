@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { AuthService } from './auth.service';
 
@@ -8,16 +9,23 @@ import { AuthService } from './auth.service';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent {
-  // private loginForm = false;
+  private signinForm = false;
 
-  constructor( private authService: AuthService)  {}
+  constructor( private authService: AuthService, private router: Router)  {}
 
-  // showLoginForm() {
-  //   this.loginForm = true;
-  // }
+  showSigninForm() {
+    this.signinForm = true;
+  }
 
   loginFacebook() {
-    // this.authService.loginFacebook()
+    this.authService.loginFacebook()
+        .subscribe(
+          data => {
+            console.log(data);
+            console.log("login facebook success");
+          },
+          error => console.error(error)
+        )
   }
 
   loginGoogle() {
@@ -25,12 +33,9 @@ export class AuthComponent {
 
   }
 
-  loginLocal()  {
-    // this.authService.loginLocal()
-
+  logout()  {
+    this.authService.logout();
+    // this.router.navigateByUrl
   }
 
-  signup()  {
-    // this.authService.signup()
-  }
 }

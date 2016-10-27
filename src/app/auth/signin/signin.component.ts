@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { User } from '../../user/user'
+import { User, UserService } from '../../user';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -12,8 +12,13 @@ import { AuthService } from '../auth.service';
 })
 export class SigninComponent implements OnInit {
   signinForm: FormGroup;
+  @Output() hideSigninForm = new EventEmitter();
+  userId;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+    private router: Router) {
     this.signinForm = new FormGroup({
       'email' : new FormControl('', Validators.compose([ Validators.required, this.validEmail ])),
       'password' : new FormControl('', Validators.required),
@@ -26,8 +31,12 @@ export class SigninComponent implements OnInit {
           data => {
             localStorage.setItem('token', data.token);
             localStorage.setItem('userId', data.userId);
-            // this.router.navigateByUrl('/');
-            console.log("signin successful")
+            localStorage.setItem('username', data.username);
+            this.userId = data.userId;
+            this.authService.isLoggedIn();
+            this.userService.getCurrentUserId();
+            this.userService.getCurrentUserName();
+            this.router.navigateByUrl('/home');
           },
           error => console.error(error)
         )
@@ -37,6 +46,10 @@ export class SigninComponent implements OnInit {
       if (!control.value.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
           return {invalidEmail: true};
       }
+  }
+
+  showSigninForm() {
+    this.hideSigninForm.emit()
   }
 
   ngOnInit() {

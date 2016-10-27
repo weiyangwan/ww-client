@@ -7,9 +7,10 @@ import { routing } from './app.routing';
 import { AppComponent } from './app.component';
 import { AuthComponent, AuthService } from './auth';
 import { SignupComponent } from './auth/signup/signup.component';
-import { UserComponent } from './user/user.component';
+import { UserComponent, UserService } from './user';
 import { HomeComponent } from './home/home.component';
 import { SigninComponent } from './auth/signin/signin.component';
+import { NavigationComponent } from './navigation/navigation.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { SigninComponent } from './auth/signin/signin.component';
     SignupComponent,
     UserComponent,
     HomeComponent,
-    SigninComponent
+    SigninComponent,
+    NavigationComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +29,7 @@ import { SigninComponent } from './auth/signin/signin.component';
     HttpModule,
     routing
   ],
-  providers: [AuthService],
+  providers: [AuthService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

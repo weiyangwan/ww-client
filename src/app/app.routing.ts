@@ -1,9 +1,11 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent } from './home'
+import { AuthComponent } from './auth';
+import { HomeComponent } from './home';
 
 const APP_ROUTES: Routes = [
-  { path: '', component: HomeComponent }
+  { path: '', component: AuthComponent },
+  { path: 'home', component: HomeComponent }
 ]
 
-export const routing = RouterModule.forRoot(APP_ROUTES) 
+export const routing = RouterModule.forRoot(APP_ROUTES)

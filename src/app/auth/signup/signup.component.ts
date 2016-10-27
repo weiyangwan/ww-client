@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
-import { User } from '../../user/user'
+import { User, UserService } from '../../user'
 import { AuthService }  from '../auth.service';
 
 @Component({
@@ -12,7 +13,10 @@ import { AuthService }  from '../auth.service';
 export class SignupComponent implements OnInit {
   signupForm: FormGroup;
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+    private router: Router) {
     this.signupForm = new FormGroup({
       'username' : new FormControl('', Validators.required),
       'email' : new FormControl('', Validators.compose([ Validators.required, this.validEmail ])),
@@ -24,7 +28,15 @@ export class SignupComponent implements OnInit {
   onSubmit()  {
     this.authService.signup(this.signupForm.value)
         .subscribe(
-          data => console.log(data),
+          data => {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.userId);
+            localStorage.setItem('username', data.username);
+            this.authService.isLoggedIn();
+            this.userService.getCurrentUserId();
+            this.userService.getCurrentUserName();
+            this.router.navigateByUrl('/home');
+          },
           error => console.error(error)
         )
   }

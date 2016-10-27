@@ -1,14 +1,16 @@
+<div class="auth col-md-4 col-md-offset-7">
+  <div class="social-login">
+    <h5>Sign in via your social account</h5>
+    <!-- <a href="http://localhost:9000/auth/login/facebook"><img src="../../assets/facebook_login.png" alt="facebook log in"></a> -->
+    <img src="../../assets/facebook_login.png" alt="facebook log in" (click)="loginFacebook()">
+    <img src="../../assets/btn_google_signin_light_normal_web.png" alt="google log in">
+  </div>
 
-<div class="social-login">
-  <h5>Sign in via your social account</h5>
-  <img src="../../assets/facebook_login.png" alt="facebook log in" />
-  <img src="../../assets/btn_google_signin_light_normal_web.png" alt="google log in">
+  <h5>--- or ---</h5>
+  <button type="button" id="login" name="login" (click)="showSigninForm()" class="login">Sign in to your wondererwanderer account</button>
+
+  <hr>
+  <ww-signin *ngIf="signinForm" (hideSigninForm)="signinForm = false"></ww-signin>
+
+  <ww-signup *ngIf="!signinForm"></ww-signup>
 </div>
-
-<h5>--- or ---</h5>
-<button type="button" id="login" name="login" (click)="showLoginForm()" class="login">Sign in to your wondererwanderer account</button>
-
-<hr>
-<ww-signin></ww-signin>
-
-<ww-signup></ww-signup>

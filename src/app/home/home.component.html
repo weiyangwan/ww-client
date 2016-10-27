@@ -1,3 +1,14 @@
-<div class="auth col-md-4 col-md-offset-7">
-  <ww-auth></ww-auth>
+{{ isLoggedIn }}
+
+<!-- home page when user is not logged in - show sign up/log in page -->
+<!-- <div *ngIf="!isLoggedIn">
+  <div class="auth col-md-4 col-md-offset-7">
+    <ww-auth></ww-auth>
+  </div>
+</div> -->
+
+<!-- home page when user is logged in -->
+<div>
+  <ww-navigation></ww-navigation>
+  <ww-user></ww-user>
 </div>

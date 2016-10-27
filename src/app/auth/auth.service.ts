@@ -11,22 +11,10 @@ export class AuthService  {
 
   constructor( private http: Http)  {}
 
-  loginFacebook() {
-
-  }
-
-  loginGoogle() {
-
-  }
-
-  loginLocal()  {
-
-  }
-
   signup(user: User)  {
     const body = JSON.stringify(user);
     const headers = new Headers({ 'Content-Type': 'application/json' });
-    return this.http.post(this.url + '/users', body, { headers: headers })
+    return this.http.post(this.url + '/users/new', body, { headers: headers })
                     .map((response: Response) => response.json())
                     .catch((error: Response) => Observable.throw(error.json()));
   }
@@ -38,4 +26,23 @@ export class AuthService  {
                     .map((response: Response) => response.json())
                     .catch((error: Response) => Observable.throw(error.json()));
   }
+
+  loginFacebook() {
+    // const headers = new Headers({ 'Access-Control-Allow-Origin': '*'})
+    return this.http.get(this.url + '/auth/login/facebook')
+                    .map((response: Response) => console.log(response.json()));
+  }
+
+  loginGoogle() {
+
+  }
+
+  logout()  {
+    localStorage.clear();
+  }
+
+  isLoggedIn()  {
+    return localStorage.getItem('token') !== null;
+  }
+
 }
