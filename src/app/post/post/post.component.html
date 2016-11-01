@@ -1,0 +1,22 @@
+<div class="userPosts">
+  <div class="userDetail">
+    <div class="img"></div>
+    <div class="nameNTime">
+      <h5>{{ post.user}}</h5>
+      <h6>{{ post.created_at | date:'medium'}}</h6>
+    </div>
+  </div>
+
+  <div [class.editing]="editing">
+    <p>{{ post.content }}</p>
+  </div>
+
+  <input type="text" *ngIf="editing" [value]="post.content" class="edit" (keyup.enter)="updatePost(post, editedPost.value)" (blur)="updatePost(post, editedPost.value)" #editedPost>
+
+  <div class="update">
+    <a (click)="onEdit()">Edit</a>
+    <a (click)="onDelete()">Delete</a>
+  </div>
+
+  <hr>
+</div>

@@ -7,8 +7,9 @@ import { User } from '../user';
 
 @Injectable()
 export class UserService  {
-  username;
   userId;
+  user: User;
+
   private url = 'http://localhost:9000';
 
   constructor( private http: Http)  {}
@@ -16,7 +17,10 @@ export class UserService  {
   getCurrentUserDetails()  {
     const headers = new Headers({ 'Content-Type': 'application/json' });
     return this.http.get(this.url + '/users/' + this.userId, { headers: headers })
-                    .map((response: Response) => console.log(response.json()))
+                    .map((response: Response) => {
+                      this.user = response.json().user;
+                      return this.user;
+                    })
                     .catch((error: Response) => Observable.throw(error.json()));
   }
 

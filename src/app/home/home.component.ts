@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { UserService }  from '../user';
+import { User, UserService }  from '../user';
 
 @Component({
   selector: 'ww-home',
@@ -9,12 +9,19 @@ import { UserService }  from '../user';
 })
 export class HomeComponent implements OnInit {
   private isLoggedIn;
-  private currentUser;
+  currentUser: User;
 
   constructor( private userService: UserService) { }
 
   ngOnInit() {
-  
+    this.userService.getCurrentUserId();
+    this.userService.getCurrentUserDetails()
+        .subscribe(
+          data => {
+            this.currentUser = data;
+            console.log(this.currentUser);
+          },
+          error => console.error(error)
+        )
   }
-
 }

@@ -1,0 +1,20 @@
+.inline {
+  display: inline-block;
+  margin:0;
+}
+
+div.form-group {
+  width: 80%;
+}
+
+button {
+  padding: 5px 20px;
+  margin-left: -5px;
+  height: 34px;
+  width: 20%;
+  border-radius: 0 15px 15px 0;
+}
+
+.form-control {
+  border-radius: 15px 0 0 15px;
+}

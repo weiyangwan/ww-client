@@ -11,6 +11,7 @@ import { UserComponent, UserService } from './user';
 import { HomeComponent } from './home/home.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import { NavigationComponent } from './navigation/navigation.component';
+import { PostsComponent, PostComponent, PostInputComponent, PostListComponent, PostService } from './post';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,11 @@ import { NavigationComponent } from './navigation/navigation.component';
     UserComponent,
     HomeComponent,
     SigninComponent,
-    NavigationComponent
+    NavigationComponent,
+    PostsComponent,
+    PostInputComponent,
+    PostListComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +34,7 @@ import { NavigationComponent } from './navigation/navigation.component';
     HttpModule,
     routing
   ],
-  providers: [AuthService, UserService],
+  providers: [AuthService, UserService, PostService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
