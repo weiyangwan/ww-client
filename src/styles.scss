@@ -2,31 +2,69 @@
 
 $primaryBrandColor: #191970;
 
-
 * {
   box-sizing: border-box;
 }
 
-h1, h2, h3, h4, h5, h6  {
+h1, h2, h3, h4, h5, h6, p  {
   margin: 0;
   padding: 0;
 }
 
+h1  { font-size: 2em }
+h2  { font-size: 1.5em }
+h3  { font-size: 1.17em }
+h4  { font-size: 1em }
+h5  { font-size: 0.83em }
+h6  { font-size: 0.67em }
+a  { font-size: 0.83em }
+
 @mixin button  {
-  padding: 5px 20px;
+  padding: 3px 20px;
   color: $primaryBrandColor;
   border: 1px solid $primaryBrandColor;
   border-radius: 5px;
   background-color: white;
   &:hover {
-    color: white;
-    border-color: transparent;
-    background-color: $primaryBrandColor;
+    border: 2px solid $primaryBrandColor;
+  }
+}
+
+@mixin primaryButton  {
+  padding: 3px 20px;
+  color: white;
+  border: transparent;
+  border-radius: 5px;
+  background-color: $primaryBrandColor;
+  &:hover {
+    color: $primaryBrandColor;
+    border: 1px solid $primaryBrandColor;
+    background-color: white;
+  }
+}
+
+@mixin deleteButton {
+  padding: 3px 20px;
+  color: grey;
+  border: 1px solid grey;
+  border-radius: 5px;
+  background-color: white;
+  &:hover {
+    color: red;
+    border-color: red;
   }
 }
 
 button  {
   @include button;
+}
+
+button.primaryButton  {
+  @include primaryButton;
+}
+
+button.deleteButton {
+  @include deleteButton;
 }
 
 button[disabled]  {
@@ -37,4 +75,86 @@ button[disabled]  {
     border: 1px solid #ccc;
     background-color: white;
   }
+}
+
+.form-control {
+  padding: 4px 12px;
+  height: 24px;
+  font-size: 12px;
+}
+
+/***************
+  forms style
+***************/
+label {
+  font-size: 11px;
+  margin-bottom: 3px;
+  padding-left: 2px;
+}
+
+input[type=text]  {
+  max-width: 400px;
+}
+
+input[type=date],
+input[type=time],
+#depTerminal,
+#arrTerminal,
+#referenceNumber,
+#contactNumber  {
+  max-width: 150px;
+}
+
+.form-group {
+  margin-bottom: 5px;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.block  {
+  display: block;
+}
+
+a {
+  cursor: pointer;
+}
+
+.float-right  {
+  float: right;
+}
+
+/**********************
+ for edit/delete icons
+ *********************/
+.update {
+  float: right;
+}
+
+.fa-trash-o,
+.fa-pencil {
+  color: #ccc;
+  &:hover {
+    color: #666;
+  }
+}
+
+/****************
+ for editing view
+ ****************/
+.editing > .view{
+  display: none;
+}
+
+/********************************************
+ to display form for accommodation/transport
+ ********************************************/
+.formCard {
+  margin: 10px 0;
+  padding: 10px 20px 20px 20px;
+  -webkit-box-shadow: 0px 0px 60px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 0px 60px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 60px 0px rgba(0,0,0,0.2);
+  border-radius: 5px;
 }

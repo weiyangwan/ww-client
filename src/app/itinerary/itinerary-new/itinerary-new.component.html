@@ -1,0 +1,327 @@
+<div class="itinerary-form col-md-6 col-md-offset-1">
+  <form [formGroup]="itineraryForm" (ngSubmit)="onSubmit()">
+
+    <!-- start of basic details -->
+    <div *ngIf="!basicDetails" class="heading">
+      <h4>Basic Details <span>( This section is required to create a new itinerary )</span></h4>
+      <a (click)="toggleBasicDetails()">show</a>
+    </div>
+
+    <div *ngIf="basicDetails">
+
+      <div class="heading">
+        <h4>Basic Details <span>( This section is required to create a new itinerary )</span></h4>
+        <a (click)="toggleBasicDetails()">hide</a>
+      </div>
+
+      <div class="formCard">
+
+        <div class="form-group">
+          <label for="name">Itinerary name</label>
+          <input type="text" id="name" formControlName="name" class="form-control">
+        </div>
+
+        <div class="form-group inline-block">
+          <label for="dateFrom">Travel date from</label>
+          <input type="date" id="dateFrom" formControlName="dateFrom" class="form-control">
+        </div>
+
+        <div class="form-group inline-block">
+          <label for="dateTo">Travel date to</label>
+          <input type="date" id="dateTo" formControlName="dateTo" class="form-control">
+        </div>
+
+      </div><!-- end of formCard -->
+
+    </div>
+    <!-- end of basic details -->
+
+
+
+    <!-- start of accommodation details -->
+    <div *ngIf="!accommodationDetails" class="heading">
+      <h4>Accommodation Arrangements</h4>
+      <a (click)="toggleAccommodationDetails()">show</a>
+    </div>
+
+    <div *ngIf="accommodationDetails">
+      <div class="heading">
+        <h4>Accommodation Arrangements</h4>
+        <a (click)="toggleAccommodationDetails()">hide</a>
+      </div>
+
+      <div formArrayName="accommodations">
+        <div *ngFor="let accommodation of accommodations.controls; let i = index" [formGroupName]="i">
+
+          <div class="formCard">
+
+            <div class="subHeading">
+              <h5 class="inline-block">Accommodation arrangement #{{ i + 1}}</h5>
+              <a class="inline-block" (click)="deleteAccommodation(i)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            </div>
+
+            <div class="accommodationDetails">
+
+              <div class="form-group">
+                <label for="name">Name of accommodation</label>
+                <input type="text" id="name" formControlName="name" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" id="address" formControlName="address" class="form-control">
+              </div>
+
+              <div class="form-group inline-block">
+                <label for="checkInDate">Check in date</label>
+                <input type="date" id="checkInDate" formControlName="checkInDate" class="form-control">
+              </div>
+
+              <div class="form-group inline-block">
+                <label for="checkOutDate">Check out date</label>
+                <input type="date" id="checkOutDate" formControlName="checkOutDate" class="form-control">
+              </div>
+
+              <div class="form-group inline-block">
+                <label for="note">Note</label>
+                <textarea name="name" rows="4" cols="80" formControlName="note" class="form-control"></textarea>
+              </div>
+
+            </div><!-- end of accommodationDetails -->
+          </div><!-- end of formCard -->
+        </div><!-- end of for loop -->
+        <button type="button" class="addOption" (click)="addAccommodation()">Add another accommodation</button>
+      </div><!-- end of for array -->
+    </div>
+    <!-- end of accommodation details -->
+
+
+    <!-- start of transport details -->
+    <div *ngIf="!transportDetails" class="heading">
+      <h4>Transport Arrangements</h4>
+      <a (click)="toggleTransportDetails()">show</a>
+    </div>
+
+    <div *ngIf="transportDetails">
+      <div class="heading">
+        <h4>Transport Arrangements</h4>
+        <a (click)="toggleTransportDetails()">hide</a>
+      </div>
+
+      <!-- form for adding new transport in itinerary-summary starts from here -->
+      <div formArrayName="transports">
+        <div *ngFor="let transport of transports.controls; let i = index" [formGroupName]="i" class="transport">
+
+          <div class="formCard">
+
+            <div class="subHeading">
+              <h5 class="inline-block">Transport arrangement #{{ i + 1}}</h5>
+              <a class="inline-block" (click)="deleteTransport(i)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            </div>
+
+            <div class="transportMode">
+              <h5>Please select the mode of transport:</h5>
+              <div *ngFor="let transport of transportType" class="inline-block transportOptions">
+                <label>
+                  <input type="radio" formControlName="transportType" [value]="transport" (click)="onSelect(transport, i)" #transportTypeOption>
+                  {{ transport }}
+                </label>
+              </div>
+            </div>
+
+            <div [ngSwitch]="transportOption[i]" class="transportHeader">
+              <div *ngSwitchCase="'flight'"><i class="fa fa-plane fa-lg" aria-hidden="true">Flight details</i></div>
+              <div *ngSwitchCase="'train'"><i class="fa fa-train fa-lg" aria-hidden="true">Train details</i></div>
+              <div *ngSwitchCase="'bus'"><i class="fa fa-bus fa-lg" aria-hidden="true">Bus details</i></div>
+              <div *ngSwitchCase="'cruise'"><i class="fa fa-ship fa-lg" aria-hidden="true">Cruise details</i></div>
+              <div *ngSwitchCase="'vehicle rental'"><i class="fa fa-car fa-lg" aria-hidden="true">Vehicle rental details</i></div>
+              <div *ngSwitchCase="'others'"><i class="fa fa-rocket fa-lg" aria-hidden="true">Other transport details</i></div>
+            </div>
+
+            <div class="departure">
+              <h5>Departure details</h5>
+
+              <div class="transportDetails">
+                <div class="form-group">
+                  <label for="cityFrom">Depart from (city)</label>
+                  <input type="text" id="cityFrom" formControlName="cityFrom" class="form-control">
+                </div>
+
+                <!-- departure template for flight -->
+                <div *ngIf="transportOption[i] === 'flight'">
+
+                  <div class="form-group">
+                    <label for="stationFrom">Departure airport</label>
+                    <input type="text" id="stationFrom" formControlName="stationFrom" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="referenceNumber">Flight number</label>
+                    <input type="text" id="referenceNumber" formControlName="referenceNumber" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="depTerminal">Terminal</label>
+                    <input type="text" id="depTerminal" formControlName="depTerminal" class="form-control">
+                  </div>
+
+                </div>
+
+                <!-- departure template for train -->
+                <div *ngIf="transportOption[i] === 'train'">
+
+                  <div class="form-group">
+                    <label for="stationFrom">Departure station</label>
+                    <input type="text" id="stationFrom" formControlName="stationFrom" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="depTerminal">Train platform</label>
+                    <input type="text" id="depTerminal" formControlName="depTerminal" class="form-control">
+                  </div>
+
+                </div>
+
+                <!-- departure template for bus -->
+                <div *ngIf="transportOption[i] === 'bus'">
+
+                  <div class="form-group">
+                    <label for="stationFrom">Departure station</label>
+                    <input type="text" id="stationFrom" formControlName="stationFrom" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="referenceNumber">Bus Number</label>
+                    <input type="text" id="referenceNumber" formControlName="referenceNumber" class="form-control">
+                  </div>
+
+                </div>
+
+                <!-- departure template for cruise -->
+                <div *ngIf="transportOption[i] === 'cruise'">
+
+                  <div class="form-group">
+                    <label for="stationFrom">Departure terminal</label>
+                    <input type="text" id="stationFrom" formControlName="stationFrom" class="form-control">
+                  </div>
+
+                </div>
+
+                <!-- departure date & time for all transport type -->
+                <div class="form-group">
+                  <label for="depDate">Departure date</label>
+                  <input type="date" id="depDate" formControlName="depDate" class="form-control">
+                </div>
+
+                <div class="form-group">
+                  <label for="depTime">Departure time</label>
+                  <input type="time" id="depTime" formControlName="depTime" class="form-control">
+                </div>
+
+              </div><!-- end of departure details -->
+            </div><!-- end of departure -->
+
+            <div class="arrival">
+              <h5>Arrival details</h5>
+
+              <div class="transportDetails">
+                <div class="form-group">
+                  <label for="cityTo">Going to (city)</label>
+                  <input type="text" id="cityTo" formControlName="cityTo" class="form-control">
+                </div>
+
+                <!-- arrival template for flight -->
+                <div *ngIf="transportOption[i] === 'flight'">
+
+                  <div class="form-group">
+                    <label for="stationTo">Arrival airport</label>
+                    <input type="text" id="stationTo" formControlName="stationTo" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="arrTerminal">Terminal</label>
+                    <input type="text" id="arrTerminal" formControlName="arrTerminal" class="form-control">
+                  </div>
+
+                </div>
+
+                <!-- arrival template for train -->
+                <div *ngIf="transportOption[i] === 'train'">
+
+                  <div class="form-group">
+                    <label for="stationTo">Arrival station</label>
+                    <input type="text" id="stationTo" formControlName="stationTo" class="form-control">
+                  </div>
+
+                </div>
+
+                <!-- arrival template for bus -->
+                <div *ngIf="transportOption[i] === 'bus'">
+
+                  <div class="form-group">
+                    <label for="stationTo">Arrival station</label>
+                    <input type="text" id="stationTo" formControlName="stationTo" class="form-control">
+                  </div>
+
+                </div>
+
+                <!-- arrival template for cruise -->
+                <div *ngIf="transportOption[i] === 'cruise'">
+
+                  <div class="form-group">
+                    <label for="stationTo">Arrival terminal</label>
+                    <input type="text" id="stationTo" formControlName="stationTo" class="form-control">
+                  </div>
+
+                </div>
+
+                <!-- arrival date & time for all transport type -->
+                <div class="form-group">
+                  <label for="arrDate">Arrival date</label>
+                  <input type="date" id="arrDate" formControlName="arrDate" class="form-control">
+                </div>
+
+                <div class="form-group">
+                  <label for="arrTime">Arrival time</label>
+                  <input type="time" id="arrTime" formControlName="arrTime" class="form-control">
+                </div>
+
+              </div><!-- end of arrival details -->
+            </div><!-- end of arrival -->
+
+            <!-- template for vehicle rental -->
+            <div *ngIf="transportOption[i] === 'vehicle rental'">
+
+              <div class="form-group">
+                <label for="rentalCompany">Rental company</label>
+                <input type="text" id="rentalCompany" formControlName="rentalCompany" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="contactNumber">Contact number</label>
+                <input type="text" id="contactNumber" formControlName="contactNumber" class="form-control">
+              </div>
+
+            </div>
+
+            <!-- template for others -->
+            <div *ngIf="transportOption[i] === 'others'">
+
+            </div>
+
+            <div class="form-group">
+              <label for="note">Note</label>
+              <textarea name="name" rows="3" cols="80" formControlName="note" class="form-control"></textarea>
+            </div>
+
+          </div><!-- end of formCard -->
+        </div><!-- end of for loop -->
+
+        <button type="button" class="addOption" (click)="addTransport()">Add another transport</button>
+      </div><!-- end of transport array -->
+    </div><!-- end of transport details -->
+
+    <button type="submit" class="saveItin" [disabled]="!itineraryForm.valid">Save Itinerary</button>
+
+  </form>
+</div>

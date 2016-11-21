@@ -1,0 +1,31 @@
+<div class="col-md-2">
+
+  <div class="friends category">
+    <div class="heading">
+      <h4>My friends</h4>
+      <a [routerLink]="['#']">find</a>
+    </div>
+    <h5>followers</h5>
+    <h5>followings</h5>
+  </div>
+
+  <div class="itinerary category">
+    <div class="heading">
+      <h4>My itineraries</h4>
+      <a [routerLink]="['../newItinerary']">new</a>
+    </div>
+    <div>
+      <div *ngFor="let itinerary of user?.itineraries">
+        <div class="itineraryList">
+          <a [routerLink]="['/itinerary/', itinerary._id]" routerLinkActive="active">
+            <h5>{{ itinerary.name }}</h5>
+            <h6>( {{ itinerary.dateFrom | date:'dd MMM yy' }} to {{ itinerary.dateTo | date:'dd MMM yy' }} )</h6>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>

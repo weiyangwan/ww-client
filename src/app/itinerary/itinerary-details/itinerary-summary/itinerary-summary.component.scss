@@ -1,0 +1,169 @@
+.heading  {
+  padding: 10px 20px;
+  background-color: lightblue;
+  border: 1px solid #d6ebf2;
+  border-radius: 5px;
+}
+
+.heading > h4,
+.heading > a  {
+  display: inline-block;
+}
+
+.heading > a  {
+  float: right;
+  color: white;
+}
+
+/***************
+  sub headings
+***************/
+.subHeading {
+  width: 100%;
+  padding-bottom: 10px;
+  font-size: 1.6rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.subHeading > a {
+  float: right;
+}
+
+/******************************
+  accommodation/transport form
+******************************/
+/** to float save button to the right **/
+.primaryButton {
+  float: right;
+}
+
+/*****************
+  transport form
+******************/
+.transportMode  {
+  padding: 20px 0;
+}
+
+.transportOptions {
+  margin-right: 20px;
+  padding-top: 10px;
+}
+
+.transportHeader {
+  padding-left: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+  font-size: 1.3rem;
+  color: #1453ad;
+}
+
+.departure  {
+  display: inline-block;
+  width: 49%;
+  border-right: 1px solid #ccc;
+}
+
+.departure > h5 {
+  padding: 5px 0;
+  color: #262626;
+  text-align: center;
+  background-color: lightblue;
+  border-radius: 10px 0 0 10px;
+}
+
+.arrival  {
+  display: inline-block;
+  margin-left: -4px;
+  width: 49%;
+  vertical-align: top;
+}
+
+.arrival > h5 {
+  padding: 5px 0;
+  color: #262626;
+  text-align: center;
+  background-color: pink;
+  border-radius: 0 10px 10px 0;
+}
+
+/*****************************************
+  accommodation/transport details display
+******************************************/
+.departureDetails {
+  color: darkred;
+}
+
+.arrivalDetails {
+  color: darkblue;
+}
+
+.note{
+  color: grey;
+}
+
+.transportDetails,
+.accommodationDetails {
+  padding: 10px;
+}
+
+/**************************
+  transport details display
+***************************/
+.transportEmphasis {
+  padding-left: 20px;
+}
+
+span  {
+  font-size: 1.5em;
+}
+
+.space  {
+  margin-right: 40px;
+}
+
+h5, h6  {
+  line-height: 1.5;
+}
+
+
+/************************
+  flight details display
+*************************/
+.detailsCard {
+  padding: 10px 20px 20px 20px;
+  vertical-align: text-top;
+  border-bottom: 1px solid #ccc;
+  -webkit-box-shadow: 0px 0px 60px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 0px 60px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 60px 0px rgba(0,0,0,0.2);
+  border-radius: 5px;
+}
+
+.block  {
+  margin-top: 10px;
+}
+
+.addNew {
+  padding-bottom: 20px;
+  border-bottom: 2px solid grey;
+}
+
+.delete {
+  float: right;
+  color: lighten(red, 10%);
+}
+
+.new  {
+  margin-right: 5px;
+  padding: 1px 5px;
+  background-color: lightpink;
+  border-radius: 4px;
+}
+
+.fa::before {
+  margin-right: 5px;
+}
+
+.inline-block {
+  vertical-align: top;
+}

@@ -1,0 +1,18 @@
+import { Injectable } from '@angular/core';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Observable } from "rxjs/Rx";
+
+import { Itinerary } from './itinerary';
+import { ItineraryService } from './itinerary.service';
+
+Injectable()
+export class ItineraryResolver implements Resolve<Itinerary> {
+
+  constructor(private itineraryService: ItineraryService) {}
+
+  resolve(route: ActivatedRouteSnapshot,
+          state: RouterStateSnapshot) : Observable<Itinerary> {
+
+    return this.itineraryService.getItin(route.params['id']);
+  }
+}

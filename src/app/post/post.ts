@@ -1,5 +1,6 @@
 export class Post {
   constructor(
     content: string,
-    user: string) {}
+    user: { username: string, userId: number }
+  ) {}
 }

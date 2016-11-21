@@ -11,19 +11,10 @@ import { User, UserService } from '../../user';
 })
 export class PostListComponent implements OnInit {
   posts: Post[] = [];
-  currentUserPosts: User;
 
   constructor(private postService: PostService, private userService: UserService) { }
 
   ngOnInit() {
-    // this.userService.getCurrentUserId();
-    // this.userService.getCurrentUserDetails()
-    //     .subscribe(
-    //       data => {
-    //         this.currentUserPosts = data.posts;
-    //         console.log(this.currentUserPosts);
-    //       }
-    //     )
     this.postService.getPosts()
         .subscribe(
           data => {

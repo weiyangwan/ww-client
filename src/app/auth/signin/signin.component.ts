@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { User, UserService } from '../../user';
@@ -16,12 +16,13 @@ export class SigninComponent implements OnInit {
   userId;
 
   constructor(
+    private formBuilder: FormBuilder,
     private authService: AuthService,
     private userService: UserService,
     private router: Router) {
-    this.signinForm = new FormGroup({
-      'email' : new FormControl('', Validators.compose([ Validators.required, this.validEmail ])),
-      'password' : new FormControl('', Validators.required)
+    this.signinForm = formBuilder.group({
+      'email' : ['', Validators.compose([ Validators.required, this.validEmail ])],
+      'password' : ['', Validators.required]
     })
   }
 

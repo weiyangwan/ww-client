@@ -1,0 +1,108 @@
+.heading  {
+  padding: 10px 20px;
+  color: white;
+  background-color: grey;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.heading > h4,
+.heading > a  {
+  display: inline-block;
+}
+
+.heading > a  {
+  float: right;
+  color: white;
+}
+
+/***************
+  sub headings
+***************/
+.subHeading {
+  width: 100%;
+  padding-bottom: 10px;
+  font-size: 1.6rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.subHeading > a {
+  float: right;
+}
+
+/*******************
+  basic details note
+********************/
+span{
+  font-size: 0.8em;
+}
+
+/************
+  transport
+************/
+.transportMode  {
+  padding: 20px 0;
+}
+
+.transportOptions {
+  margin-right: 20px;
+  padding-top: 10px;
+}
+
+.transportHeader {
+  padding-left: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+  font-size: 1.3rem;
+  color: #1453ad;
+}
+
+.departure  {
+  display: inline-block;
+  width: 49%;
+  border-right: 1px solid #ccc;
+}
+
+.departure > h5 {
+  padding: 5px 0;
+  color: #262626;
+  text-align: center;
+  background-color: lightblue;
+  border-radius: 10px 0 0 10px;
+}
+
+.arrival  {
+  display: inline-block;
+  margin-left: -4px;
+  width: 49%;
+  vertical-align: top;
+}
+
+.arrival > h5 {
+  padding: 5px 0;
+  color: #262626;
+  text-align: center;
+  background-color: pink;
+  border-radius: 0 10px 10px 0;
+}
+
+.transportDetails,
+.accommodationDetails {
+  padding: 10px;
+}
+
+/**********
+  buttons
+***********/
+.saveItin {
+  float: right;
+  margin-top: 30px;
+}
+
+.addOption  {
+  margin: 20px;
+}
+
+.fa::before {
+  margin-right: 5px;
+}

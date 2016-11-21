@@ -19,7 +19,6 @@ export class PostComponent implements OnInit {
 
   onEdit()  {
     this.editing = true;
-    console.log(this.editing);
   }
 
   updatePost(post: Post, editedPost: string)  {

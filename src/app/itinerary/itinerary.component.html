@@ -1,0 +1,42 @@
+<div class="col-md-6 col-md-offset-1">
+
+    <div [class.editing]="editing">
+      <div class="view">
+        <div class="heading">
+          <h3>{{ itinerary?.name }}</h3>
+          <div class="inline-block">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </div>
+
+          <div class="inline-block">
+            <h5>{{ itinerary?.dateFrom | date:'dd MMM yy' }} to {{ itinerary?.dateTo | date:'dd MMM yy' }}</h5>
+          </div>
+        </div>
+        <a (click)="editDetails()" class="float-right"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+      </div>
+    </div>
+
+    <form *ngIf="editing" [formGroup]="basicDetailsForm" (ngSubmit)="saveDetails()">
+      <div class="form-group">
+        <label for="name">Itinerary Name</label>
+        <input type="text" id="name" formControlName="name" class="form-control" [value]="itinerary.name">
+      </div>
+
+      <div class="form-group inline-block">
+        <label for="dateFrom">Travel Date From</label>
+        <input type="date" id="dateFrom" formControlName="dateFrom" class="form-control" [value]="itinerary.dateFrom">
+      </div>
+
+      <div class="form-group inline-block">
+        <label for="dateTo">Travel Date To</label>
+        <input type="date" id="dateTo" formControlName="dateTo" class="form-control" [value]="itinerary.dateTo">
+      </div>
+
+      <button type="submit" [disabled]="!basicDetailsForm.valid">Save Details</button>
+
+    </form>
+
+  <ww-itinerary-details></ww-itinerary-details>
+  <button class="deleteButton" (click)="deleteItinerary()">Delete this itinerary</button>
+
+</div>

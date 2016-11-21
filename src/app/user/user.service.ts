@@ -31,4 +31,18 @@ export class UserService  {
   getCurrentUserName()  {
     return localStorage.getItem('username');
   }
+
+  getUserNavigationLinks()  {
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    return this.http.get(this.url + '/users/navigationLinks/' + this.userId, { headers: headers })
+                    .map((response: Response) => response.json().user)
+                    .catch((error: Response) => Observable.throw(error.json()));
+  }
+
+  deleteUser()  {
+    const token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+    return this.http.delete( this.url + '/users/' + this.userId + token)
+                    .map((response: Response) => response.json())
+                    .catch((error: Response) => Observable.throw(error.json()));
+  }
 }
