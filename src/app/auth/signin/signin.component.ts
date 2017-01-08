@@ -12,6 +12,7 @@ import { AuthService } from '../auth.service';
 })
 export class SigninComponent implements OnInit {
   signinForm: FormGroup;
+  //emits to auth.component.html
   @Output() hideSigninForm = new EventEmitter();
   userId;
 
@@ -30,14 +31,11 @@ export class SigninComponent implements OnInit {
     this.authService.signin(this.signinForm.value)
         .subscribe(
           data => {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('userId', data.userId);
-            localStorage.setItem('username', data.username);
-            this.userId = data.userId;
-            this.authService.isLoggedIn();
-            this.userService.getCurrentUserId();
-            this.userService.getCurrentUserName();
-            this.router.navigateByUrl('/home');
+            console.log(data);
+            this.userService.getCurrentUserDetails()
+                .subscribe( data => {
+                  this.router.navigateByUrl('/me');
+                });
           },
           error => console.error(error)
         )

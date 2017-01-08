@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
 
 import { AuthService } from '../auth';
-import { UserService } from '../user';
+import { User, UserService } from '../user';
 
 @Component({
   selector: 'ww-navigation',
@@ -10,7 +11,9 @@ import { UserService } from '../user';
   styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent implements OnInit {
-  username;
+  user: User;
+
+  currentUserSubscription: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -19,13 +22,18 @@ export class NavigationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.username = this.userService.getCurrentUserName();
+    this.currentUserSubscription = this.userService.updateCurrentUser
+                                       .subscribe(
+                                         data =>  {
+                                           this.user = data;
+                                         }
+                                       )
   }
 
   logout()  {
     this.authService.logout();
     console.log("logout successful");
-    this.router.navigateByUrl("/");
+    // this.router.navigateByUrl("/");
   }
 
 }

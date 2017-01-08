@@ -1,11 +1,6 @@
-.userPosts  {
-  // margin-top: 10px;
-  // min-height: 50px;
-  // padding: 10px 10px 0 10px;
-  // -webkit-box-shadow: 0px 0px 60px 0px rgba(0,0,0,0.2);
-  // -moz-box-shadow: 0px 0px 60px 0px rgba(0,0,0,0.2);
-  // box-shadow: 0px 0px 60px 0px rgba(0,0,0,0.2);
-  // border-radius: 5px;
+.user-posts {
+  padding: 20px;
+  border-bottom: 1px solid lightgrey;
 }
 
 h6  {
@@ -15,38 +10,30 @@ h6  {
   color: #ccc;
 }
 
-.img  {
-  height: 30px;
-  width: 30px;
-  border: 1px solid blue;
-  border-radius: 50%;
+.fa-user {
+  padding-left: 9.5px;
+  padding-top: 10px;
 }
 
-.userDetail > div,
-.userDetail > .nameNTime {
+.user-detail  {
+  height: 35px;
+}
+
+.user-detail > div,
+.user-detail > .name-time {
   display: inline-block;
 }
 
-.nameNTime  {
+.name-time  {
   margin-left: 5px;
   vertical-align: top;
 }
 
-.editing  {
-  display: none;
-}
-
-input {
-  padding-left: 5px;
-  width: 100%;
-  border-radius: 5px;
-}
-
 .content  {
-  margin-top: 10px;
-  padding-left: 5px;
+  margin: 10px 40px;
 }
 
-hr  {
-  margin-top: 5px;
+textarea  {
+  width: 100%;
+  resize: none;
 }

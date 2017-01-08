@@ -34,6 +34,6 @@ export class PostComponent implements OnInit {
     this.postService.deletePost(this.post)
         .subscribe(
           data => console.log(data)
-        );
+        )
   }
 }

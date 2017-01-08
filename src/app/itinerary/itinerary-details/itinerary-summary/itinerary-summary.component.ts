@@ -1,9 +1,13 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { Subscription } from 'rxjs/Rx';
 
 import { ItineraryService } from '../../itinerary.service';
 import { Itinerary } from '../../itinerary';
+import { UserService } from '../../../user';
+import { Event, EventService } from '../../../event';
+import { FlashMessageService } from '../../../flash-message';
 
 @Component({
   selector: 'ww-itinerary-summary',
@@ -12,6 +16,16 @@ import { Itinerary } from '../../itinerary';
 })
 export class ItinerarySummaryComponent implements OnInit, DoCheck {
   itinerary: Itinerary;
+  eventSubscription: Subscription;
+  events: Event[] = [];
+
+  itinDateSubscription: Subscription;
+  itinDateRange = [];
+
+  displayAccommodationDelete = 'none';
+  displayTransportDelete = 'none';
+  accommodationToDelete;
+  transportToDelete;
 
   // for editing accommodation
   accommodationSection = true;
@@ -23,57 +37,52 @@ export class ItinerarySummaryComponent implements OnInit, DoCheck {
   editTransportForm: FormGroup;
   transports;
 
-  // for adding new accommodation/transport
-  addAccommodationForm: FormGroup;
-  // to see the add new accommodation form
+  // to see the add new accommodation/transport form
   addNewAccommodation = false;
-
-  addTransportForm: FormGroup;
-  // to see the add new transport form
   addNewTransport = false;
-  transportType = [ 'flight', 'train', 'bus', 'cruise', 'vehicle rental', 'others' ];
-  transportOption = ['flight'];
 
   constructor(
     private itineraryService: ItineraryService,
+    private eventService: EventService,
+    private userService: UserService,
+    private flashMessageService: FlashMessageService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder) {
       this.editAccommodationForm = this.formBuilder.group({
         'name': '',
-        'address': '',
+        'formatted_address': '',
+        'website': '',
+        'international_phone_number': '',
         'checkInDate': '',
         'checkOutDate': '',
         'note': '',
-        'editing': false
+        'editing': false,
+        'created_at': '',
+        'user': '',
       }),
       this.editTransportForm = this.formBuilder.group({
         'transportType': '',
         'referenceNumber': '',
         'depTerminal': '',
         'arrTerminal': '',
-        'stationFrom': '',
-        'stationTo': '',
-        'cityFrom': '',
-        'cityTo': '',
+        'depStation': '',
+        'arrStation': '',
+        'depCity': '',
+        'arrCity': '',
         'depDate': '',
         'depTime': '',
         'arrDate': '',
         'arrTime': '',
-        'rentalCompany': '',
+        'transportCompany': '',
         'contactNumber': '',
         'note': '',
-        'editing': false
-      }),
-      this.addAccommodationForm = this.formBuilder.group({
-        'accommodations': this.accommodationsArray()
-      }),
-      this.addTransportForm = this.formBuilder.group({
-        'transports': this.transportsArray()
+        'editing': false,
+        'created_at': '',
+        'user': '',
       })
     }
 
-
-  // TO SHOW/HIDE THE ACCOMMODATION/TRANSPORT SECTION
+  // show/hide accommodation/transport section
   toggleAccommodation() {
     this.accommodationSection = !this.accommodationSection;
   }
@@ -84,7 +93,7 @@ export class ItinerarySummaryComponent implements OnInit, DoCheck {
 
   //-------------- SECTION FOR ADDING NEW ACCOMMODATION/TRANSPORT --------
 
-  // TO TOGGLE VIEW, TRUE WILL SHOW THE ADD ACCOMMODATION/TRANSPORT FORM
+  // to toggle view, true will show the accommodation/transport form
   addAccommodation()  {
     this.addNewAccommodation = true;
     this.accommodationSection = true;
@@ -95,193 +104,13 @@ export class ItinerarySummaryComponent implements OnInit, DoCheck {
     this.transportSection = true;
   }
 
-  // FOR ADDING NEW ACCOMMODATIONS/TRANSPORTS IN THE FORM
-  transportsArray() {
-    this.transports = this.formBuilder.array([
-      this.formBuilder.group({
-        'transportType': 'flight',
-        'referenceNumber': '',
-        'depTerminal': '',
-        'arrTerminal': '',
-        'stationFrom': '',
-        'stationTo': '',
-        'cityFrom': '',
-        'cityTo': '',
-        'depDate': '',
-        'depTime': '',
-        'arrDate': '',
-        'arrTime': '',
-        'rentalCompany': '',
-        'contactNumber': '',
-        'note': '',
-        'editing': false
-      })
-    ]);
-    return this.transports;
-  }
-
-  addTransportControl()  {
-    this.transportOption.push('flight');
-
-    this.transports.push(
-      this.formBuilder.group({
-        'transportType': 'flight',
-        'referenceNumber': '',
-        'depTerminal': '',
-        'arrTerminal': '',
-        'stationFrom': '',
-        'stationTo': '',
-        'cityFrom': '',
-        'cityTo': '',
-        'depDate': '',
-        'depTime': '',
-        'arrDate': '',
-        'arrTime': '',
-        'rentalCompany': '',
-        'contactNumber': '',
-        'note': '',
-        'editing': false
-      })
-    )
-  }
-
-  accommodationsArray()  {
-    this.accommodations = this.formBuilder.array([
-      this.formBuilder.group({
-        'name': '',
-        'address': '',
-        'checkInDate': '',
-        'checkOutDate': '',
-        'note': '',
-        'editing': false
-      })
-    ]);
-    return this.accommodations;
-  }
-
-  addAccommodationControl()  {
-    this.accommodations.push(
-      this.formBuilder.group({
-        'name': '',
-        'address': '',
-        'checkInDate': '',
-        'checkOutDate': '',
-        'note': '',
-        'editing': false
-      })
-    )
-  }
-
-  // TO DETERMINE TRANSPORT TYPE AND RENDER THE APPROPRIATE FORM VIEW
-  onSelect(transport, i)  {
-    this.transportOption[i] = transport;
-  }
-
-  // FOR FORM SUBMISSION WHEN ADDING NEW ACCOMMODATION/TRANSPORT
-  onAddNewAccommodations()  {
-    let newAccommodationArray = this.addAccommodationForm.value.accommodations;
-
-    for (var i = 0; i < newAccommodationArray.length; i++) {
-      this.itinerary['accommodations'].push(newAccommodationArray[i])
-    }
-
+  // to hide accommodation/transport forms
+  cancelAccommodationForm(value) {
     this.addNewAccommodation = false;
-    this.accommodations.reset([{
-      'name': '',
-      'address': '',
-      'checkInDate': '',
-      'checkOutDate': '',
-      'note': '',
-      'editing': false
-    }])
-
-    this.itineraryService.editItin(this.itinerary)
-        .subscribe(
-          data => console.log(data)
-        )
   }
 
-  onAddNewTransports()  {
-    let newTransportArray = this.addTransportForm.value.transports;
-
-    for (var i=0; i < newTransportArray.length; i++)  {
-      this.itinerary['transports'].push(newTransportArray[i])
-    }
-
-    this.transports.reset([{
-      'transportType': 'flight',
-      'referenceNumber': '',
-      'depTerminal': '',
-      'arrTerminal': '',
-      'stationFrom': '',
-      'stationTo': '',
-      'cityFrom': '',
-      'cityTo': '',
-      'depDate': '',
-      'depTime': '',
-      'arrDate': '',
-      'arrTime': '',
-      'rentalCompany': '',
-      'contactNumber': '',
-      'note': '',
-      'editing': false
-    }])
-
-    this.transportOption = ['flight'];
-
+  cancelTransportForm(value) {
     this.addNewTransport = false;
-
-    this.itineraryService.editItin(this.itinerary)
-        .subscribe(
-          data => console.log(data)
-        )
-  }
-
-  // TO DELETE ADDITIONAL ENTRY
-  deleteNewAccommodation(i)  {
-    if (this.accommodations.length === 1)  {
-      this.addNewAccommodation = false;
-
-      this.accommodations.reset([{
-        'name': '',
-        'address': '',
-        'checkInDate': '',
-        'checkOutDate': '',
-        'note': '',
-        'editing': false
-      }])
-    } else  {
-      this.accommodations.removeAt(i);
-    }
-  }
-
-  deleteNewTransport(i) {
-    if (this.transports.length === 1) {
-      this.addNewTransport = false;
-
-      this.transports.reset([{
-        'transportType': 'flight',
-        'referenceNumber': '',
-        'depTerminal': '',
-        'arrTerminal': '',
-        'stationFrom': '',
-        'stationTo': '',
-        'cityFrom': '',
-        'cityTo': '',
-        'depDate': '',
-        'depTime': '',
-        'arrDate': '',
-        'arrTime': '',
-        'rentalCompany': '',
-        'contactNumber': '',
-        'note': '',
-        'editing': false
-      }])
-
-      this.transportOption = ['flight'];
-    } else  {
-      this.transports.removeAt(i);
-    }
   }
 
   //-------------- END OF SECTION FOR ADDING NEW ACCOMMODATION/TRANSPORT --------
@@ -289,109 +118,172 @@ export class ItinerarySummaryComponent implements OnInit, DoCheck {
 
   //-------------- SECTION FOR EDITING CURRENT ACCOMMODATION/TRANSPORT --------
 
-  // TO SHOW THE EDIT FORM
+  // to show/hide edit form
   editAccommodation(accommodation)  {
     accommodation.editing = true;
+  }
+
+  cancelEditAccommodation(accommodation)  {
+    accommodation.editing = false;
+  }
+
+  cancelEditTransport(transport)  {
+    transport.editing = false;
   }
 
   editTransport(transport)  {
     transport.editing = true;
   }
 
-  // WHEN SUBMITTING THE EDITED FORM AND TO SEND TO ITINERARY SERVICE
+  // to submit edit form
   onEditAccommodation(index) {
     let editedAccommodation = this.editAccommodationForm.value;
-    let originalAccommodation = this.itinerary['accommodations'][index];
+    let originalAccommodation = this.events[index];
 
     for (var value in editedAccommodation)  {
-      if(editedAccommodation[value] === '')  {
-        editedAccommodation[value] = originalAccommodation[value];
+      if(editedAccommodation[value] === null) {
+        editedAccommodation[value] = '';
+      }
+      if(editedAccommodation[value] !== '')  {
+        originalAccommodation[value] = editedAccommodation[value];
       }
     }
 
-    originalAccommodation.editing = false;
-    this.itinerary['accommodations'][index] = editedAccommodation;
+    this.eventService.editEvent(originalAccommodation)
+        .subscribe(
+          data => {
+            this.flashMessageService.handleFlashMessage(data.message);
+          })
 
     this.editAccommodationForm.reset({
       'name': '',
-      'address': '',
+      'formatted_address': '',
+      'website': '',
+      'international_phone_number': '',
       'checkInDate': '',
       'checkOutDate': '',
       'note': '',
-      'editing': false
+      'editing': false,
+      'created_at': '',
+      'user': '',
     })
-
-    this.itineraryService.editItin(this.itinerary)
-        .subscribe(
-          data => console.log(data)
-        )
   }
 
   onEditTransport(index)  {
     let editedTransport = this.editTransportForm.value;
-    let originalTransport = this.itinerary['transports'][index];
+    let originalTransport = this.events[index];
 
     for (var value in editedTransport) {
-      if(editedTransport[value] === '')  {
-        editedTransport[value] = originalTransport[value];
+      if(editedTransport[value] === null) {
+        editedTransport[value] = '';
+      }
+      if(editedTransport[value] !== '')  {
+        originalTransport[value] = editedTransport[value];
       }
     }
-
-    originalTransport.editing = false;
-    this.itinerary['transports'][index] = editedTransport;
 
     this.editTransportForm.reset({
       'transportType': '',
       'referenceNumber': '',
       'depTerminal': '',
       'arrTerminal': '',
-      'stationFrom': '',
-      'stationTo': '',
-      'cityFrom': '',
-      'cityTo': '',
+      'depStation': '',
+      'arrStation': '',
+      'depCity': '',
+      'arrCity': '',
       'depDate': '',
       'depTime': '',
       'arrDate': '',
       'arrTime': '',
-      'rentalCompany': '',
+      'transportCompany': '',
       'contactNumber': '',
       'note': '',
-      'editing': false
-    })
+      'editing': false,
+      'created_at': '',
+      'user': '',
+    });
 
-    this.itineraryService.editItin(this.itinerary)
+    this.eventService.editEvent(originalTransport)
         .subscribe(
-          data => console.log(data)
-        )
+          data => {
+            this.flashMessageService.handleFlashMessage(data.message);
+          })
   }
 
   //-------------- END OF SECTION FOR EDITING CURRENT ACCOMMODATION/TRANSPORT --------
 
   // TO DELETE EXISTING ACCOMMODATION/TRANSPORT
-  deleteAccommodation(i)  {
-    this.itinerary['accommodations'].splice(i, 1);
-
-    this.itineraryService.editItin(this.itinerary)
-        .subscribe(
-          data => console.log(data)
-        )
+  confirmDeleteAccommodation(event) {
+    this.accommodationToDelete = event;
+    this.displayAccommodationDelete = 'block';
   }
 
-  deleteTransport(i)  {
-    this.itinerary['transports'].splice(i, 1);
+  cancelDeleteAccommodation()  {
+    this.accommodationToDelete = '';
+    this.displayAccommodationDelete = 'none';
+  }
 
-    this.itineraryService.editItin(this.itinerary)
+  confirmDeleteTransport(event) {
+    this.transportToDelete = event;
+    this.displayTransportDelete = 'block';
+  }
+
+  cancelDeleteTransport()  {
+    this.transportToDelete = '';
+    this.displayTransportDelete = 'none';
+  }
+
+  deleteAccommodation(event, i)  {
+    this.events.splice(i, 1);
+
+    this.eventService.deleteEvent(event)
         .subscribe(
-          data => console.log(data)
-        )
+          data => {
+            this.displayAccommodationDelete = 'none';
+            this.accommodationToDelete = '';
+            this.flashMessageService.handleFlashMessage(data.message);
+          })
+  }
+
+  deleteTransport(event, i)  {
+    this.events.splice(i, 1);
+
+    this.eventService.deleteEvent(event)
+        .subscribe(
+          data => {
+            this.displayTransportDelete = 'none';
+            this.transportToDelete = '';
+            this.flashMessageService.handleFlashMessage(data.message);
+          })
   }
 
   ngOnInit() {
+    this.itinDateSubscription = this.itineraryService.updateDate
+                                    .subscribe(
+                                      result => {
+                                        let updatedItinDate = Object.keys(result).map(key => result[key]);
+                                        this.itinDateRange = updatedItinDate;
+                                    })
+
+    this.eventService.getEvents(this.route.snapshot['_urlSegment'].segments[2].path)
+        .subscribe(
+          data => {
+            this.events = data;
+          }
+        )
+
+    this.eventSubscription = this.eventService.updateEvent
+                                 .subscribe(
+                                  result => {
+                                    this.events = Object.keys(result).map(key => result[key]);
+                                  })
+
   }
 
   ngDoCheck() {
     this.itinerary = this.itineraryService.itin();
     // console.log(this.itinerary);
   }
+
 
 }

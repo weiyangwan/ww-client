@@ -1,14 +1,12 @@
 
-<div>
+<div class="post-form">
   <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
 
-    <div class="form-group inline">
-      <input type="text" id="content" #content formControlName="content" class="form-control" placeholder="what's on your mind?">
+    <div class="form-group">
+      <textarea rows="4" formControlName="content" class="form-control" placeholder="been wondering wandering?"></textarea>
     </div>
 
-    <div class="inline">
-      <button type="submit" name="button" [disabled]="!postForm.valid"><i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i></button>
-    </div>
+    <button type="submit" class="primaryButton" [disabled]="!postForm.valid">Post</button>
 
   </form>
 

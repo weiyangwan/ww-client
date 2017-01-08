@@ -10,9 +10,8 @@ export class ItineraryResolver implements Resolve<Itinerary> {
 
   constructor(private itineraryService: ItineraryService) {}
 
-  resolve(route: ActivatedRouteSnapshot,
-          state: RouterStateSnapshot) : Observable<Itinerary> {
-
+  resolve(route: ActivatedRouteSnapshot) {
+    console.log(route);
     return this.itineraryService.getItin(route.params['id']);
   }
 }

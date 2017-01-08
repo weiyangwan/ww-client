@@ -18,7 +18,6 @@ export class ProfileDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.userService.getCurrentUserId();
     this.userService.getCurrentUserDetails()
         .subscribe(
           data => {
@@ -30,12 +29,12 @@ export class ProfileDetailsComponent implements OnInit {
   }
 
   onDelete()  {
-    this.userService.deleteUser()
-        .subscribe(
-          data => {
-            console.log(data);
-            this.router.navigateByUrl('/');
-        });
+    // this.userService.deleteUser()
+    //     .subscribe(
+    //       data => {
+    //         console.log(data);
+    //         this.router.navigateByUrl('/');
+    //     });
   }
 
 }

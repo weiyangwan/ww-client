@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { Subscription } from 'rxjs/Rx';
 
 import { PostService } from '../post.service';
 import { UserService } from '../../user';
@@ -13,15 +14,16 @@ export class PostInputComponent implements OnInit {
   postForm: FormGroup;
   userId;
   username;
+  currentUserSubscription: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
-    private postService: PostService,
-    private userService: UserService) {
-    this.postForm = formBuilder.group({
-      content: ['', Validators.required],
-      user: ['dd', Validators.required]
-    })
+    private userService: UserService,
+    private postService: PostService) {
+      this.postForm = formBuilder.group({
+        content: ['', Validators.required],
+        user: ['dd', Validators.required]
+      })
   }
 
   onSubmit()  {
@@ -41,9 +43,13 @@ export class PostInputComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getCurrentUserId();
-    this.userId = this.userService.userId;
-    this.username = this.userService.getCurrentUserName();
+    this.currentUserSubscription = this.userService.updateCurrentUser
+                                       .subscribe(
+                                         data => {
+                                           this.userId = data['id'];
+                                           this.username = data['username'];
+                                         }
+                                       )
   }
 
 }

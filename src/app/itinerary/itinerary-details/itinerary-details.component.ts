@@ -1,8 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-
-import { ItineraryService } from '../itinerary.service';
-import { Itinerary } from '../itinerary';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'ww-itinerary-details',
@@ -10,23 +6,9 @@ import { Itinerary } from '../itinerary';
   styleUrls: ['./itinerary-details.component.scss']
 })
 export class ItineraryDetailsComponent implements OnInit {
-  // @Input() itinerary: Itinerary;
 
-  constructor(
-    private itineraryService: ItineraryService,
-    private route: ActivatedRoute
-  ) { }
+  constructor() { }
 
   ngOnInit() {
-    // this.route.params.forEach((params: Params) => {
-    //   let id = params['id'];
-    //   this.itineraryService.getItin(id)
-    //   .subscribe(
-    //     data => {
-    //       this.itinerary = data.itinerary;
-    //       console.log(this.itinerary)
-    //     }
-    //   );
-    // })
   }
 }

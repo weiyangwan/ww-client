@@ -1,0 +1,5 @@
+<div class="form-group">
+  <label>Search for your check in location</label>
+</div>
+<ww-google-place-search (placeDetail)="getCheckinDetails($event)"></ww-google-place-search>
+<button class="inline-block" type="button" (click)="submit()">Check in</button>

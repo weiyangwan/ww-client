@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { Post } from '../post';
 import { PostService } from '../post.service';
-import { User, UserService } from '../../user';
 
 @Component({
   selector: 'ww-post-list',
@@ -12,7 +11,7 @@ import { User, UserService } from '../../user';
 export class PostListComponent implements OnInit {
   posts: Post[] = [];
 
-  constructor(private postService: PostService, private userService: UserService) { }
+  constructor(private postService: PostService) { }
 
   ngOnInit() {
     this.postService.getPosts()

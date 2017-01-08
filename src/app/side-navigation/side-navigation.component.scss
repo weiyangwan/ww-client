@@ -45,3 +45,31 @@ h6  {
 .active {
   font-weight: bolder;
 }
+
+
+/**************************
+ new itinerary form modal
+**************************/
+.modal-header {
+  background-color: #6494ED;
+  border-radius: 5px 5px 0 0;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
+#new-itin-form  {
+  top: 20%;
+}
+
+/*************************
+ find friend modal-footer
+ *************************/
+.x-close  {
+  top: 5%;
+}
+
+.follow-button  {
+  float: right;
+}

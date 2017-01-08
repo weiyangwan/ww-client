@@ -8,10 +8,16 @@ export class Itinerary {
       userId: number }],
     accommodations: [{
       name: string,
-      address: string,
+      formatted_address: string,
+      website: string,
+      international_phone_number: string,
       checkInDate: string,
       checkOutDate: string,
       note: string,
+      user: {
+        _Id: number,
+        username: string
+      },
       editing: boolean}],
     transports: [{
       transportType: string,
@@ -29,6 +35,11 @@ export class Itinerary {
       rentalCompany: string,
       contactNumber: string,
       note: string,
-      editing: boolean}]
+      user: {
+        _Id: number,
+        username: string
+      },
+      editing: boolean}],
+    activities: [string]
   ) {}
 }

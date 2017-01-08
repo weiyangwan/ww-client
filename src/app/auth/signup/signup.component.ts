@@ -30,13 +30,11 @@ export class SignupComponent implements OnInit {
     this.authService.signup(this.signupForm.value)
         .subscribe(
           data => {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('userId', data.userId);
-            localStorage.setItem('username', data.username);
-            this.authService.isLoggedIn();
-            this.userService.getCurrentUserId();
-            this.userService.getCurrentUserName();
-            this.router.navigateByUrl('/home');
+            console.log(data);
+            this.userService.getCurrentUserDetails()
+                .subscribe( data => {
+                  this.router.navigateByUrl('/me');
+                } );
           },
           error => console.error(error)
         )
